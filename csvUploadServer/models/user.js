@@ -3,11 +3,11 @@ var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt');
 
 var schema = new Schema({
-    email: { type: String, require: true },
     username: { type: String, require: true },
     password: { type: String, require: true },
-    longitude: { type: String },
-    latitude: { type: String },
+    longitude: { type: Number },
+    latitude: { type: Number },
+    place: {type: String },
     incognito: { type: Boolean},
     creation_dt: { type: Date, require: true }
 });

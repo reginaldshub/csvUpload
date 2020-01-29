@@ -13,7 +13,7 @@ export class LoginComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         private route: ActivatedRoute,
-        private router: Router,
+        private _router: Router,
         private _service: ServiceService
     ) {
     }
@@ -37,12 +37,18 @@ export class LoginComponent implements OnInit {
         if (this.loginForm.invalid) {
             console.log("invalid form");            
         }else{
-          this._service.login(this.loginForm.getRawValue()).subscribe( res => {
-            console.log(res);
+          this._service.login(this.loginForm.getRawValue()).subscribe( (res:any) => {
+            if(res.success){
             this.loading = false;
+            localStorage.setItem('currentUser', JSON.stringify(this.loginForm.get('username').value));
+            this._service.currentUserSubject.next(this.loginForm.get('username').value);
+            this._service.nearByUsers.next(res.nearByUsers);
+            this._router.navigate(['/dashboard']);
+            }
           })
         }
 
         
     }
+
 }

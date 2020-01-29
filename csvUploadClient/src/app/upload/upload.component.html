@@ -1,0 +1,28 @@
+<div>
+    <input size="60" type="file" (change)="onFileChanged($event)" />
+    </div>
+    <div>
+    <button class="fileupbtn" (click)="upload()">Upload</button>
+    </div>
+
+    <br /> <hr />
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Sl No.</th>
+            <th scope="col">UserName</th>
+            <th scope="col">Place</th>
+            <th scope="col">Latitude</th>
+            <th scope="col">Longitude</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor = "let user of allUsersData;let i = index">
+            <td>{{i}}</td>
+            <td>{{user.username}}</td>
+            <td>{{user.place}}</td>
+            <td>{{user.latitude}}</td>
+            <td>{{user.longitude}}</td>
+          </tr>
+        </tbody>
+      </table>

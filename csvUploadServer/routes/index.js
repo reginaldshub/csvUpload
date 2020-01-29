@@ -14,16 +14,16 @@ router.get('/', function (req, res, next) {
 
 
 router.post('/register', function (req, res, next) {
-  User.findOne({ email: req.body.email }, (err, userExists) => {
+  User.findOne({ username: req.body.username }, (err, userExists) => {
     if (userExists) return res.status(409).json({ message: 'User Already Registered.' })
     else if (err) throw err;
     else {
       var user = new User({
-        email: req.body.email,
         username: req.body.username,
         password: User.hashPassword(req.body.password),
         longitude: req.body.longitude,
         latitude: req.body.latitude,
+        place: req.body.place,
         incognito: false,
         creation_dt: Date.now()
       });
@@ -41,9 +41,6 @@ router.post('/login', (req, res, next) => {
   User.findOne({ username: req.body.username }).exec().then((user) => {
     let nearByUsers = [];
     if (user) {
-      console.log(user);
-      
-      console.log(user);
       if (user.isValid(req.body.password)) {
         // generate token
         let token = jwt.sign({ username: user.username }, 'secret', { expiresIn: '20m' });
@@ -54,7 +51,7 @@ router.post('/login', (req, res, next) => {
               distance = getDistanceBetweenPoints(user.latitude, user.longitude, rec.latitude, rec.longitude);
              console.log("SIST",distance);
              
-              if(distance <= 10 || distance >= 10) nearByUsers.push({"username": rec.username, "distance": distance})
+              if(distance <= 10) nearByUsers.push({"username": rec.username, "distance": distance})
             })         
             return resolve(res.status(200).send({ success: true, message: "Succesfully fetched user details", token, nearByUsers }));
           }); 
@@ -63,7 +60,7 @@ router.post('/login', (req, res, next) => {
         return res.status(401).json({ message: ' Invalid Credentials' });
       }
     } else {
-      return res.status(404).json({ message: 'User email is not registered.' })
+      return res.status(404).json({ message: 'Username is not registered.' })
     }
   }).catch(err => {
     console.log(err);

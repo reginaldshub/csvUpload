@@ -1,0 +1,13 @@
+<form [formGroup]="coordinateForm" (ngSubmit)="search()">
+    <input class="search-box" formControlName="latitude" type="number">
+    <input class="search-box" formControlName="longitude" type="number"> 
+    <button class="btn btn-primary" type="sumbit">Search</button></form>
+
+    <h1>Hi {{currentUser}}!</h1>
+    <br />
+    <h3>All Nearby users:</h3>
+    <ul>
+        <li *ngFor="let user of nearByUsers">
+            {{user.username}}
+        </li>
+    </ul>
